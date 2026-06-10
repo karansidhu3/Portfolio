@@ -128,7 +128,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             inset: 0,
             pointerEvents: 'none',
             background: [
-              'radial-gradient(ellipse 96% 94% at 50% 50%, transparent 52%, rgba(5, 5, 10, 0.72) 100%)',
               'radial-gradient(ellipse 75% 50% at 20% 12%, rgba(210, 185, 145, 0.08) 0%, transparent 65%)',
               'radial-gradient(ellipse 55% 42% at 80% 90%, rgba(130, 145, 210, 0.04) 0%, transparent 58%)',
             ].join(', '),
