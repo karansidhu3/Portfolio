@@ -45,7 +45,7 @@ export function ContactSection() {
           <a
             href="mailto:karansidhu5550@gmail.com"
             aria-label="Send email to Karan Sidhu at karansidhu5550@gmail.com"
-            className="text-text-primary hover:text-accent transition-colors duration-300"
+            className="text-text-primary hover:text-accent hover:-translate-y-1 transition duration-300"
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(1.75rem, 3.5vw, 4.5rem)',
@@ -74,7 +74,7 @@ export function ContactSection() {
                 href="https://www.linkedin.com/in/karan-sidhu3/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-label hover:text-text-secondary transition-colors duration-200"
+                className="text-label hover:text-text-secondary hover:translate-x-px hover:-translate-y-px transition duration-200 inline-block"
                 aria-label="Karan Sidhu on LinkedIn"
               >
                 LinkedIn ↗
@@ -83,7 +83,7 @@ export function ContactSection() {
                 href="https://github.com/karansidhu3"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-label hover:text-text-secondary transition-colors duration-200"
+                className="text-label hover:text-text-secondary hover:translate-x-px hover:-translate-y-px transition duration-200 inline-block"
                 aria-label="Karan Sidhu on GitHub"
               >
                 GitHub ↗

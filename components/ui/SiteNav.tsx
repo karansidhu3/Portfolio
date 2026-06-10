@@ -80,7 +80,7 @@ export function SiteNav() {
               <a
                 key={href}
                 href={href}
-                className="pointer-events-auto text-text-tertiary hover:text-text-secondary transition-colors duration-200"
+                className="pointer-events-auto text-text-tertiary hover:text-text-secondary hover:-translate-y-px transition duration-200 inline-block"
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: 'var(--text-xs)',

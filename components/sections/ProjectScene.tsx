@@ -581,7 +581,7 @@ function ExternalLinks({ project }: { project: Project }) {
           href={project.demoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-label hover:text-text-secondary transition-colors duration-200"
+          className="text-label hover:text-text-secondary hover:translate-x-px hover:-translate-y-px transition duration-200 inline-block"
           aria-label={`${project.title} live demo`}
         >
           Live Demo ↗
@@ -592,7 +592,7 @@ function ExternalLinks({ project }: { project: Project }) {
           href={project.githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-label hover:text-text-secondary transition-colors duration-200"
+          className="text-label hover:text-text-secondary hover:translate-x-px hover:-translate-y-px transition duration-200 inline-block"
           aria-label={`${project.title} on GitHub`}
         >
           GitHub ↗

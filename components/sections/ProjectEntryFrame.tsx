@@ -207,8 +207,8 @@ export function ProjectEntryFrame({
       ref={frameRef}
       className="entry-frame"
       style={{
-        height: '85vh',
-        minHeight: '540px',
+        height: '70vh',
+        minHeight: '460px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
