@@ -106,7 +106,7 @@ function DashboardScreenshot({ index }: { index: number }) {
       )}
 
       {cfg.showFeed && (
-        <div>
+        <g>
           {[0, 1, 2, 3, 4].map((i) => (
             <g key={i}>
               <rect x="176" y={228 + i * 44} width="608" height="36" rx="2" fill={i === 0 ? 'rgba(255,255,255,0.025)' : 'transparent'} />
@@ -115,7 +115,7 @@ function DashboardScreenshot({ index }: { index: number }) {
               {i < 4 && <rect x="176" y={264 + i * 44} width="608" height="1" fill="rgba(255,255,255,0.035)" />}
             </g>
           ))}
-        </div>
+        </g>
       )}
     </svg>
   );

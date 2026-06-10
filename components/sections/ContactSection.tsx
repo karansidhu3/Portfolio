@@ -23,16 +23,16 @@ export function ContactSection() {
     >
       <div className="grid-container">
 
-        {/* Statement — smaller scale, steps back for the email */}
-        <div className="col-span-12 md:col-span-7 mb-12 md:mb-14">
+        {/* Statement — caption to the address, not the other way around */}
+        <div className="col-span-12 md:col-span-6 mb-10 md:mb-12">
           <h2
             id="contact-heading"
             className="text-text-secondary"
             style={{
-              fontSize: 'clamp(1rem, 1.6vw, 1.75rem)',
+              fontSize: 'clamp(0.9375rem, 1.1vw, 1.25rem)',
               fontWeight: 300,
-              lineHeight: 1.5,
-              letterSpacing: '-0.01em',
+              lineHeight: 1.55,
+              letterSpacing: '-0.005em',
             }}
           >
             If what you&apos;ve seen here represents the standard you&apos;re
@@ -40,18 +40,18 @@ export function ContactSection() {
           </h2>
         </div>
 
-        {/* Email at display scale — the section's typographic focal point */}
-        <div className="col-span-12 md:col-span-9 mb-14 md:mb-16">
+        {/* Email — dominant typographic event. The address IS the invitation. */}
+        <div className="col-span-12 mb-14 md:mb-16">
           <a
             href="mailto:karansidhu5550@gmail.com"
             aria-label="Send email to Karan Sidhu at karansidhu5550@gmail.com"
-            className="text-text-primary hover:text-accent hover:-translate-y-1 transition duration-300"
+            className="text-text-primary hover:text-accent transition-colors duration-300"
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(1.75rem, 3.5vw, 4.5rem)',
-              fontWeight: 300,
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em',
+              fontSize: 'clamp(2.5rem, 8vw, 11rem)',
+              fontWeight: 200,
+              lineHeight: 0.95,
+              letterSpacing: '-0.04em',
               display: 'block',
               textDecoration: 'none',
             }}

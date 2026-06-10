@@ -78,12 +78,14 @@ export function ProjectScene({ project, index }: ProjectSceneProps) {
         aria-hidden="true"
       />
 
-      {/* Cinematic entry frame — consistent grammar, all projects */}
+      {/* Spatial spread entry — unique composition per project */}
       <ProjectEntryFrame
         headingId={headingId}
         index={index}
         title={project.title}
         descriptor={project.descriptor}
+        year={project.year}
+        tech={project.tech}
       />
 
       {/* Content section — variant determined by project character */}
@@ -112,41 +114,27 @@ function StandardLayout({ project }: { project: Project }) {
   return (
     <div className="grid-container">
 
-      {/* Problem + metadata */}
-      <div className="col-span-12 mb-16 md:mb-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-          <div className="md:col-span-6">
-            <h3 className="text-subheading text-text-primary mb-6">
-              {project.descriptor}
-            </h3>
-            <p
-              className="text-text-primary"
-              style={{
-                fontSize: 'clamp(1.25rem, 1.8vw, 1.75rem)',
-                fontWeight: 300,
-                lineHeight: 1.7,
-                letterSpacing: '-0.015em',
-                maxWidth: '46ch',
-              }}
-            >
-              {project.problem}
-            </p>
-          </div>
+      {/* Problem — architectural scale */}
+      <div className="col-span-12 md:col-span-10 mb-4">
+        <p
+          className="text-text-primary"
+          style={{
+            fontSize: 'clamp(2rem, 3.5vw, 4.5rem)',
+            fontWeight: 200,
+            lineHeight: 1.25,
+            letterSpacing: '-0.025em',
+          }}
+        >
+          {project.problem}
+        </p>
+      </div>
 
-          <div className="md:col-span-5 md:col-start-8">
-            <div
-              style={{
-                borderTop: '1px solid var(--color-border)',
-                borderBottom: '1px solid var(--color-border)',
-                paddingTop: '1.25rem',
-                paddingBottom: '1.25rem',
-              }}
-            >
-              <p className="text-label" style={{ lineHeight: 1.6 }}>
-                {project.year} · {project.status.replace('-', ' ')} · {project.tech.join(' · ')}
-              </p>
-            </div>
-          </div>
+      {/* Metadata — right-aligned annotation */}
+      <div className="col-span-12 mb-16 md:mb-20">
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <p className="text-label" style={{ lineHeight: 1.6 }}>
+            {project.year} · {project.status.replace('-', ' ')} · {project.tech.join(' · ')}
+          </p>
         </div>
       </div>
 
@@ -179,8 +167,8 @@ function StandardLayout({ project }: { project: Project }) {
         <PlaceholderDiagram slug={project.slug} title={project.title} />
       </div>
 
-      {/* Engineering insights */}
-      <div className="col-span-12 md:col-span-8 mb-16 md:mb-20">
+      {/* Engineering insights — full width, numbers as structural anchors */}
+      <div className="col-span-12 mb-16 md:mb-20">
         <SectionLabel>Engineering Insights</SectionLabel>
         <div>
           {project.insights.map((insight, i) => (
@@ -253,31 +241,24 @@ function InterfaceForwardLayout({ project }: { project: Project }) {
         <ScreenshotGrid project={project} />
       </div>
 
-      {/* Problem — full-width, editorial weight */}
-      <div className="col-span-12 md:col-span-9 mb-8 md:mb-10">
+      {/* Problem — architectural scale */}
+      <div className="col-span-12 md:col-span-10 mb-4">
         <p
           className="text-text-primary"
           style={{
-            fontSize: 'clamp(1.25rem, 1.8vw, 1.75rem)',
-            fontWeight: 300,
-            lineHeight: 1.7,
-            letterSpacing: '-0.015em',
+            fontSize: 'clamp(2rem, 3.5vw, 4.5rem)',
+            fontWeight: 200,
+            lineHeight: 1.25,
+            letterSpacing: '-0.025em',
           }}
         >
           {project.problem}
         </p>
       </div>
 
-      {/* Metadata — below the problem, editorial band */}
-      <div className="col-span-12 md:col-span-6 mb-16 md:mb-20">
-        <div
-          style={{
-            borderTop: '1px solid var(--color-border)',
-            borderBottom: '1px solid var(--color-border)',
-            paddingTop: '1.25rem',
-            paddingBottom: '1.25rem',
-          }}
-        >
+      {/* Metadata — right-aligned annotation */}
+      <div className="col-span-12 mb-16 md:mb-20">
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <p className="text-label" style={{ lineHeight: 1.6 }}>
             {project.year} · {project.status.replace('-', ' ')} · {project.tech.join(' · ')}
           </p>
@@ -337,31 +318,24 @@ function CompressedLayout({ project }: { project: Project }) {
   return (
     <div className="grid-container">
 
-      {/* Problem — full-width, archival weight */}
-      <div className="col-span-12 md:col-span-8 mb-10 md:mb-12">
+      {/* Problem — compressed but architecturally present */}
+      <div className="col-span-12 md:col-span-10 mb-4">
         <p
           className="text-text-primary"
           style={{
-            fontSize: 'clamp(1.25rem, 1.8vw, 1.75rem)',
-            fontWeight: 300,
-            lineHeight: 1.7,
-            letterSpacing: '-0.015em',
+            fontSize: 'clamp(1.75rem, 3vw, 4rem)',
+            fontWeight: 200,
+            lineHeight: 1.3,
+            letterSpacing: '-0.02em',
           }}
         >
           {project.problem}
         </p>
       </div>
 
-      {/* Metadata */}
-      <div className="col-span-12 md:col-span-5 mb-16 md:mb-20">
-        <div
-          style={{
-            borderTop: '1px solid var(--color-border)',
-            borderBottom: '1px solid var(--color-border)',
-            paddingTop: '1.25rem',
-            paddingBottom: '1.25rem',
-          }}
-        >
+      {/* Metadata — right-aligned annotation */}
+      <div className="col-span-12 mb-16 md:mb-20">
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <p className="text-label" style={{ lineHeight: 1.6 }}>
             {project.year} · {project.status.replace('-', ' ')} · {project.tech.join(' · ')}
           </p>
@@ -525,15 +499,9 @@ function ScreenshotGrid({ project }: { project: Project }) {
  */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      style={{
-        borderTop: '1px solid var(--color-border)',
-        paddingTop: '1.25rem',
-        marginBottom: '1.75rem',
-      }}
-    >
-      <p className="text-label">{children}</p>
-    </div>
+    <p className="text-label" style={{ marginBottom: '1.25rem' }}>
+      {children}
+    </p>
   );
 }
 
@@ -550,13 +518,38 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
  */
 function InsightRow({ index, text }: { index: number; text: string }) {
   return (
-    <div className="flex gap-6 py-8 border-b border-border last:border-0">
-      <span className="text-mono text-text-tertiary shrink-0 pt-0.5" aria-hidden="true">
+    <div
+      className="border-b border-border last:border-0"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'clamp(2.5rem, 4vw, 5rem) 1fr',
+        gap: '2rem',
+        alignItems: 'start',
+        paddingTop: '2rem',
+        paddingBottom: '2rem',
+      }}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'clamp(1.75rem, 2.5vw, 3rem)',
+          fontWeight: 100,
+          lineHeight: 1,
+          letterSpacing: '-0.03em',
+          color: 'var(--color-text-tertiary)',
+        }}
+      >
         {String(index + 1).padStart(2, '0')}
       </span>
       <p
         className="text-text-secondary"
-        style={{ fontSize: '1.0625rem', lineHeight: 1.7, letterSpacing: '-0.005em' }}
+        style={{
+          fontSize: '1.0625rem',
+          lineHeight: 1.7,
+          letterSpacing: '-0.005em',
+          paddingTop: 'clamp(0.2rem, 0.4vw, 0.4rem)',
+        }}
       >
         {text}
       </p>

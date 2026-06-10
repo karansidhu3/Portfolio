@@ -2,8 +2,9 @@ import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FooterSection } from '@/components/sections/FooterSection';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { ProjectScene } from '@/components/sections/ProjectScene';
+import { ProjectEntryFrame } from '@/components/sections/ProjectEntryFrame';
 import { SignalSection } from '@/components/sections/SignalSection';
+import { ChapterCard } from '@/components/systems/ChapterCard';
 import { FlowPath } from '@/components/systems/FlowPath';
 import { MarqueeBand } from '@/components/systems/MarqueeBand';
 import { SiteNav } from '@/components/ui/SiteNav';
@@ -20,9 +21,30 @@ export default function PortfolioPage() {
       <MarqueeBand />
       <SignalSection />
 
-      {orderedProjects.map((project, index) => (
-        <ProjectScene key={project.slug} project={project} index={index} />
-      ))}
+      {/*
+       * Work section — ChapterCard threshold + entry frames.
+       * Architecture E: project detail content lives on dedicated project pages.
+       * Each entry frame links to /work/[slug] for the full case study.
+       */}
+      <section
+        id="work"
+        aria-label="Selected work"
+        style={{ backgroundColor: '#f1ebe1' }}
+      >
+        <ChapterCard projectTitles={orderedProjects.map(p => p.title)} />
+        {orderedProjects.map((project, index) => (
+          <ProjectEntryFrame
+            key={project.slug}
+            headingId={`${project.slug}-heading`}
+            index={index}
+            title={project.title}
+            descriptor={project.descriptor}
+            year={project.year}
+            tech={project.tech}
+            href={`/work/${project.slug}`}
+          />
+        ))}
+      </section>
 
       <AboutSection />
       <ContactSection />

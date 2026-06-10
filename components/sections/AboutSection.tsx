@@ -6,15 +6,20 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 /*
  * Scene 6 — About.
+ * Emotional purpose: build trust through depth and specificity.
  *
- * STRUCTURE:
- *   1. Metrics catalog band — 4-column editorial entries with counter tick-up
- *   2. Heading — word-level clip-rise reveal
- *   3. Body prose — static, always there
+ * TYPOGRAPHY (revised — Typography A):
+ * Heading in GeistMono weight 400. At this scale the fixed-width
+ * rhythm makes the statement feel like a doctrine, not a claim.
  *
- * Motion vocabulary word for About: counter tick-up (mechanical, new direction).
- * The metrics count up as the section enters — a different register from the
- * heading's fluid word-rise, creating contrast within the same scene.
+ * MOTION (revised — Motion A + E):
+ * Word-clip animation removed — heading exists from load.
+ * Counter tick-up retained — it's the signature mechanical motion
+ * for this section. Numbers counting up feel like evidence arriving,
+ * not content appearing. This is the one meaningful motion moment here.
+ *
+ * COPY (revised — Writing Voice A+D):
+ * Shorter declarative fragments. The manifesto voice.
  */
 
 const HEADING =
@@ -29,23 +34,16 @@ interface Metric {
 }
 
 const METRICS: Metric[] = [
-  { value: '03',                       label: 'Projects shipped',           target: 3, suffix: '',  padded: true },
-  { value: '2+',                       label: 'Years building AI systems',  target: 2, suffix: '+', padded: false },
-  { value: 'TypeScript · Python · SQL', label: 'Primary stack',             target: null, suffix: '', padded: false },
-  { value: 'UBC CS · 2026',            label: 'Degree · Year',              target: null, suffix: '', padded: false },
+  { value: '03',                       label: 'Projects shipped',           target: 3,    suffix: '',  padded: true },
+  { value: '2+',                       label: 'Years building AI systems',  target: 2,    suffix: '+', padded: false },
+  { value: 'TypeScript · Python · SQL', label: 'Primary stack',             target: null, suffix: '',  padded: false },
+  { value: 'UBC CS · 2026',            label: 'Degree · Year',              target: null, suffix: '',  padded: false },
 ];
 
-// Border and padding config per cell for 2-col mobile → 4-col desktop
-// Mobile: 2×2 grid — vertical divider between cols, horizontal divider between rows
-// Desktop: 4×1 row — vertical dividers between all cols, no horizontal dividers
 const CELL_CLASSES = [
-  // index 0 — col 1 on both layouts
   { edge: '',                                     pad: 'pr-4 md:pr-6', row: 'border-b border-border md:border-b-0' },
-  // index 1 — col 2 on both layouts
   { edge: 'border-l border-border pl-4 md:pl-6',  pad: 'pr-4 md:pr-6', row: 'border-b border-border md:border-b-0' },
-  // index 2 — col 1 row 2 on mobile, col 3 on desktop
   { edge: 'md:border-l md:border-border md:pl-6', pad: 'pr-4 md:pr-6', row: '' },
-  // index 3 — col 2 row 2 on mobile, col 4 on desktop
   { edge: 'border-l border-border pl-4 md:pl-6',  pad: '',             row: '' },
 ];
 
@@ -54,8 +52,6 @@ export function AboutSection() {
   const ctxRef = useRef<{ revert: () => void } | null>(null);
   const animatedRef = useRef(false);
   const reducedMotion = useReducedMotion();
-
-  const words = HEADING.split(' ');
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -76,7 +72,7 @@ export function AboutSection() {
             toggleActions: 'play none none none',
           };
 
-          // ── Counter tick-up for numeric metrics ──────────────────────
+          // Counter tick-up — signature motion for this section
           const counterEls = section.querySelectorAll<HTMLElement>('[data-metric-counter]');
           counterEls.forEach(el => {
             const target = parseInt(el.getAttribute('data-metric-target') ?? '0', 10);
@@ -95,17 +91,6 @@ export function AboutSection() {
               },
             });
           });
-
-          // ── Heading word-level clip rise ─────────────────────────────
-          const wordEls = section.querySelectorAll<HTMLElement>('[data-about-word]');
-          if (wordEls.length > 0) {
-            gsap.set(wordEls, { y: '110%' });
-            gsap.timeline({ scrollTrigger: TRIGGER }).to(
-              wordEls,
-              { y: '0%', duration: 0.9, ease: 'power4.out', stagger: 0.07 },
-              0.2
-            );
-          }
         }, section);
 
         ctxRef.current = ctx;
@@ -121,7 +106,7 @@ export function AboutSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="scene-content section-padding"
+      className="scene-content section-padding section-inverted"
       aria-labelledby="about-heading"
     >
       <div className="grid-container">
@@ -183,65 +168,50 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* ── Heading — word-level reveal ──────────────────────────────── */}
-        <div className="col-span-12 md:col-span-9 mb-16 md:mb-20">
+        {/*
+         * Heading — GeistMono weight 400. No word-splitting, no animation.
+         * The statement exists. The doctrine is stated.
+         */}
+        <div className="col-span-12 mb-16 md:mb-20">
           <h2
             id="about-heading"
             className="text-text-primary"
             style={{
-              fontSize: 'clamp(1.875rem, 2.8vw, 3.25rem)',
-              fontWeight: 300,
-              lineHeight: 1.35,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'clamp(1.75rem, 3.2vw, 4.25rem)',
+              fontWeight: 400,
+              lineHeight: 1.3,
               letterSpacing: '-0.02em',
             }}
           >
-            {words.map((word, i) => (
-              <span
-                key={i}
-                style={{
-                  overflow: 'hidden',
-                  display: 'inline-block',
-                  marginRight: i < words.length - 1 ? '0.3em' : 0,
-                  verticalAlign: 'bottom',
-                }}
-              >
-                <span data-about-word style={{ display: 'inline-block' }}>
-                  {word}
-                </span>
-              </span>
-            ))}
+            {HEADING}
           </h2>
         </div>
 
-        {/* ── Body prose — static, always present ─────────────────────── */}
-        <div className="col-span-12 md:col-span-5 mb-12">
-          <p className="text-body text-text-secondary mb-6">
-            I build full-stack AI systems — from the pipeline that ingests
-            to the inference layer to the interface that presents. The work
-            I find most interesting lives where engineering decisions and
-            product decisions are the same decision.
-          </p>
-          <p className="text-body text-text-secondary">
-            Most software can only recognize what its authors anticipated.
-            The interesting problems are understanding problems, not
-            processing ones. That&apos;s where I&apos;ve spent the last year —
-            working in TypeScript, Python, and PostgreSQL, building systems
-            that get better at their own job.
-          </p>
-        </div>
-
+        {/*
+         * Body prose — right half only. Left 6 columns are authored void.
+         * Asymmetric weight after a full-width heading creates spatial
+         * hierarchy that centered prose cannot.
+         */}
         <div className="col-span-12 md:col-span-5 md:col-start-7 mb-16 md:mb-20">
           <p className="text-body text-text-secondary mb-6">
-            The shift toward AI happened through a specific frustration: I
-            kept hitting problems where the software needed to understand
-            something, not just process it. Building for that requires
-            treating the model as an architectural decision — not a feature
-            layered onto existing software.
+            Full-stack from pipeline to inference to interface.
+            The interesting work lives where engineering decisions and
+            product decisions are the same decision.
+          </p>
+          <p className="text-body text-text-secondary mb-6">
+            The interesting problems are understanding problems, not processing ones.
+            That&apos;s where I&apos;ve spent the last two years — building systems
+            that get better at their own job.
+          </p>
+          <p className="text-body text-text-secondary mb-6">
+            AI as an architectural decision, not a feature.
+            The model belongs in the design — not layered onto software
+            that was already built without it.
           </p>
           <p className="text-body text-text-secondary">
-            I&apos;m looking for teams where engineering quality is a genuine
-            standard. Where the depth of the thinking is legible in
-            what gets built.
+            Looking for teams where quality is a genuine standard.
+            Where the depth of thinking is legible in what gets built.
           </p>
         </div>
 

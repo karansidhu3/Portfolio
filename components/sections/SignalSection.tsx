@@ -8,27 +8,19 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
  * Scene 2 — Signal / Orientation.
  * Emotional purpose: declaration, not introduction.
  *
- * MOTION PHILOSOPHY:
+ * TYPOGRAPHY (revised — Typography A):
+ * Statement in GeistMono weight 400. The fixed-width rhythm at display
+ * scale makes the declaration feel indexed, certain, engineered. The
+ * asymmetric left column of mono text creates architectural weight.
  *
- * The hero assembled itself word-by-word, building presence from silence.
- * Signal uses a different grammar — not assembly, but a two-part statement
- * arriving in stages. The first clause establishes the territory; the second
- * drops the thesis after a deliberate pause.
+ * MOTION (revised — Motion A):
+ * Content exists from load. Only one structural motion remains:
+ * the left border draws down — establishing the spatial frame.
+ * The drawing precedes the content's existence, but since content
+ * is already present, the border drawing is now a spatial annotation
+ * rather than a sequential reveal.
  *
- * The overflow:hidden word-clip belongs to the project entry frames (title grammar).
- * Signal uses opacity + translation: quieter, more spoken than assembled.
- * The distinction is felt, not consciously noticed.
- *
- * MOTION SEQUENCE (relative to ScrollTrigger entry):
- *   t=0.0  Left border draws down     1.0s  power3.out  — spatial frame before words
- *   t=0.3  Clause 1 rises in          1.2s  power3.out  — territory established
- *           (completes at t=1.5)
- *   t=1.9  Clause 2 rises in          1.0s  power3.out  — thesis lands (0.4s pause = em dash beat)
- *   t=2.5  Body text fades in         0.8s  sine.out    — supporting context last
- *
- * Trigger: 'top 65%' — animation is building before visitor fully arrives.
- *
- * Reduced motion: all elements visible immediately at final state.
+ * Trigger: 'top 65%' — border drawing begins before visitor fully arrives.
  */
 export function SignalSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -40,52 +32,26 @@ export function SignalSection() {
     const section = sectionRef.current;
     if (!section || reducedMotion) return;
 
+    if (animatedRef.current) return;
+    animatedRef.current = true;
+
     Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
       ([{ default: gsap }, { ScrollTrigger }]) => {
         if (!sectionRef.current) return;
-
-        // Strict Mode double-invoke guard
-        if (animatedRef.current) return;
-        animatedRef.current = true;
-
         gsap.registerPlugin(ScrollTrigger);
 
         const ctx = gsap.context(() => {
           const borderEl = section.querySelector<HTMLElement>('[data-signal="border"]');
-          const clause1El = section.querySelector<HTMLElement>('[data-signal="clause-1"]');
-          const clause2El = section.querySelector<HTMLElement>('[data-signal="clause-2"]');
-          const bodyEl = section.querySelector<HTMLElement>('[data-signal="body"]');
 
-          if (borderEl) gsap.set(borderEl, { scaleY: 0, transformOrigin: 'top center' });
-          if (clause1El) gsap.set(clause1El, { opacity: 0, y: 28 });
-          if (clause2El) gsap.set(clause2El, { opacity: 0, y: 28 });
-          if (bodyEl) gsap.set(bodyEl, { opacity: 0 });
-
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 65%',
-              toggleActions: 'play none none none',
-            },
-          });
-
-          // Border draws downward — establishes the spatial frame first
           if (borderEl) {
-            tl.to(borderEl, { scaleY: 1, duration: 1.0, ease: 'power3.out' }, 0);
-          }
-
-          // Clause 1 — the territory
-          if (clause1El) {
-            tl.to(clause1El, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 0.3);
-          }
-
-          // Clause 2 — the thesis. 0.4s pause after clause 1 settles (the em dash beat)
-          if (clause2El) {
-            tl.to(clause2El, { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 1.9);
-          }
-
-          if (bodyEl) {
-            tl.to(bodyEl, { opacity: 1, duration: 0.8, ease: 'sine.out' }, 2.5);
+            gsap.set(borderEl, { scaleY: 0, transformOrigin: 'top center' });
+            gsap.timeline({
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 65%',
+                toggleActions: 'play none none none',
+              },
+            }).to(borderEl, { scaleY: 1, duration: 1.0, ease: 'power3.out' }, 0);
           }
         }, section);
 
@@ -104,11 +70,45 @@ export function SignalSection() {
       id="signal"
       className="scene-content section-padding"
       aria-labelledby="signal-statement"
+      style={{ backgroundColor: '#f3ede4' }}
     >
-      <div className="grid-container">
-        <div className="col-span-12 md:col-span-10 md:col-start-1" style={{ position: 'relative', paddingLeft: '1.75rem' }}>
+      {/* Environmental background number — spatial depth */}
+      <div
+        aria-hidden="true"
+        style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}
+      >
+        <span
+          style={{
+            position: 'absolute',
+            right: '-3%',
+            bottom: '-20%',
+            fontFamily: 'var(--font-primary)',
+            fontSize: 'clamp(12rem, 22vw, 34rem)',
+            fontWeight: 100,
+            lineHeight: 0.85,
+            letterSpacing: '-0.06em',
+            color: 'var(--color-text-primary)',
+            opacity: 0.025,
+            userSelect: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          02
+        </span>
+      </div>
 
-          {/* Left border — draws downward on scroll entry, spatial frame for the statement */}
+      <div className="grid-container">
+
+        {/*
+         * Statement — left column, GeistMono at display scale.
+         * Fixed-width character rhythm makes the declaration feel indexed.
+         * The 5-column grid boundary constrains line length — the mono block
+         * becomes a vertical typographic column, architectural weight on the left.
+         */}
+        <div
+          className="col-span-12 md:col-span-5"
+          style={{ position: 'relative', paddingLeft: '1.75rem' }}
+        >
           <div
             data-signal="border"
             aria-hidden="true"
@@ -121,48 +121,35 @@ export function SignalSection() {
               backgroundColor: 'var(--color-border-strong)',
             }}
           />
-
-          {/*
-           * Two-clause statement — one paragraph, two animated phases.
-           * The em dash marks consequence: clause 1 states territory, clause 2 lands thesis.
-           * The 0.4s pause between them literalizes the structural beat.
-           */}
           <p
             id="signal-statement"
-            className="text-text-primary mb-12"
+            className="text-text-primary mb-12 md:mb-0"
             style={{
-              fontSize: 'clamp(2.25rem, 3.8vw, 4.5rem)',
-              fontWeight: 300,
-              lineHeight: 1.15,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'clamp(1.5rem, 2.8vw, 3.75rem)',
+              fontWeight: 400,
+              lineHeight: 1.2,
               letterSpacing: '-0.02em',
-              maxWidth: '22ch',
             }}
           >
-            <span
-              data-signal="clause-1"
-              style={{ display: 'inline-block' }}
-            >
-              The work I&apos;m most interested in lives at the boundary of engineering and intelligence
-            </span>
-            <span
-              data-signal="clause-2"
-              style={{ display: 'inline-block' }}
-            >
-              {' '}— systems that don&apos;t just process data, but that get better at processing it.
-            </span>
+            The work I&apos;m most interested in lives at the boundary of engineering and intelligence
+            {' '}— systems that don&apos;t just process data, but that get better at processing it.
           </p>
-
-          <p
-            data-signal="body"
-            className="text-body text-text-secondary"
-            style={{ maxWidth: '52ch' }}
-          >
-            I build full-stack, think in systems, and treat AI not as a feature to bolt on
-            but as a medium to design for. The engineering depth and the product thinking
-            happen in the same head.
-          </p>
-
         </div>
+
+        {/*
+         * Body — right column, anchored to the bottom of the statement.
+         * cols 6–8 are intentional void — the distance creates compositional
+         * tension between declaration and elaboration.
+         */}
+        <div className="col-span-12 md:col-span-4 md:col-start-9 md:self-end">
+          <p className="text-body text-text-secondary">
+            Full-stack from pipeline to inference to interface.
+            AI as a design medium, not a feature to bolt on.
+            The engineering depth and the product thinking are the same head.
+          </p>
+        </div>
+
       </div>
     </section>
   );

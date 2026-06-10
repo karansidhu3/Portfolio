@@ -163,16 +163,16 @@ export function FlowPath() {
         }
         const proximity = Math.exp(-((minDist / 220) ** 2));
 
-        const baseOp = mobile ? 0.055 : 0.075;
-        const sectionOp = mobile ? 0.065 : 0.105;
-        const velOp = velMag * 0.028;
+        const baseOp = mobile ? 0.11 : 0.16;
+        const sectionOp = mobile ? 0.13 : 0.22;
+        const velOp = velMag * 0.07;
         const opacity = (baseOp + sectionOp * proximity + velOp) * edgeFade;
 
         if (px !== null && py !== null) {
           ctx.beginPath();
           ctx.moveTo(px, py);
           ctx.lineTo(x, y);
-          ctx.strokeStyle = `rgba(200,184,154,${opacity.toFixed(3)})`;
+          ctx.strokeStyle = `rgba(196,112,40,${opacity.toFixed(3)})`;
           ctx.stroke();
         }
         px = x;
@@ -197,29 +197,29 @@ export function FlowPath() {
       // Outermost halo — radial gradient, wide and nearly invisible
       const haloR = mobile ? 10 : 18;
       const haloGrad = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, haloR);
-      haloGrad.addColorStop(0, `rgba(200,184,154,${(0.12 * dotIntensity).toFixed(3)})`);
-      haloGrad.addColorStop(0.5, `rgba(200,184,154,${(0.05 * dotIntensity).toFixed(3)})`);
-      haloGrad.addColorStop(1, 'rgba(200,184,154,0)');
+      haloGrad.addColorStop(0, `rgba(196,112,40,${(0.42 * dotIntensity).toFixed(3)})`);
+      haloGrad.addColorStop(0.5, `rgba(196,112,40,${(0.18 * dotIntensity).toFixed(3)})`);
+      haloGrad.addColorStop(1, 'rgba(196,112,40,0)');
       ctx.beginPath();
       ctx.arc(dotX, dotY, haloR, 0, Math.PI * 2);
       ctx.fillStyle = haloGrad;
       ctx.fill();
 
-      // Glow ring — shadowBlur creates the bloom
+      // Glow ring
       const glowR = mobile ? 3.5 : 5;
-      ctx.shadowColor = `rgba(200,184,154,${(0.6 * dotIntensity).toFixed(3)})`;
+      ctx.shadowColor = `rgba(196,112,40,${(0.75 * dotIntensity).toFixed(3)})`;
       ctx.shadowBlur = mobile ? 10 : 16;
       ctx.beginPath();
       ctx.arc(dotX, dotY, glowR, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(200,184,154,${(0.70 * dotIntensity).toFixed(3)})`;
+      ctx.fillStyle = `rgba(196,112,40,${(0.95 * dotIntensity).toFixed(3)})`;
       ctx.fill();
 
-      // Bright core — crisp center point, slightly cooler white
+      // Bright core — crisp amber center point
       ctx.shadowBlur = 0;
       const coreR = mobile ? 1.5 : 2;
       ctx.beginPath();
       ctx.arc(dotX, dotY, coreR, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(228,216,196,${Math.min(1, 0.95 * dotIntensity).toFixed(3)})`;
+      ctx.fillStyle = `rgba(220,140,60,${Math.min(1, 0.95 * dotIntensity).toFixed(3)})`;
       ctx.fill();
 
       ctx.restore();
