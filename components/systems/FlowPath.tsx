@@ -89,6 +89,8 @@ export function FlowPath() {
   const prevTimeRef = useRef(0);
   const sectionYsRef = useRef<number[]>([]);
   const lastIdleDrawRef = useRef(0);
+  // When contact section is in view, the dot goes still — held shot.
+  const contactVisibleRef = useRef(false);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -186,6 +188,10 @@ export function FlowPath() {
       const dotX = (0.5 + (catmullRomX(tDot) - 0.5) * ampMult) * viewW;
       const dotY = DOT_Y_FRAC * viewH;
 
+      // When contact is visible: dot goes still — the held shot.
+      if (contactVisibleRef.current) {
+        return;
+      }
       // Autonomous pulse: 2.5s period sine wave, range 0.6–1.0
       const pulse = 0.7 + 0.3 * Math.sin(time * 0.00125 * Math.PI);
       // Brighten while scrolling — snaps up fast, decays with velocity
@@ -261,10 +267,22 @@ export function FlowPath() {
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
 
+    // Observe contact section — dot goes still when it's in view
+    const contactEl = document.getElementById('contact');
+    let contactObserver: IntersectionObserver | null = null;
+    if (contactEl) {
+      contactObserver = new IntersectionObserver(
+        ([entry]) => { contactVisibleRef.current = entry.isIntersecting; },
+        { threshold: 0.15 }
+      );
+      contactObserver.observe(contactEl);
+    }
+
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      contactObserver?.disconnect();
     };
   }, [reducedMotion]);
 

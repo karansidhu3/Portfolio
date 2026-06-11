@@ -6,7 +6,6 @@ import { ProjectEntryFrame } from '@/components/sections/ProjectEntryFrame';
 import { SignalSection } from '@/components/sections/SignalSection';
 import { ChapterCard } from '@/components/systems/ChapterCard';
 import { FlowPath } from '@/components/systems/FlowPath';
-import { MarqueeBand } from '@/components/systems/MarqueeBand';
 import { SiteNav } from '@/components/ui/SiteNav';
 import { projects } from '@/lib/data/projects';
 
@@ -18,20 +17,20 @@ export default function PortfolioPage() {
       <FlowPath />
       <SiteNav />
       <HeroSection />
-      <MarqueeBand />
       <SignalSection />
 
       {/*
        * Work section — ChapterCard threshold + entry frames.
        * Architecture E: project detail content lives on dedicated project pages.
-       * Each entry frame links to /work/[slug] for the full case study.
+       * Each entry frame is a full link target — the entire frame navigates to the
+       * project page. No text link needed; the frame physics communicate the threshold.
        */}
       <section
         id="work"
         aria-label="Selected work"
         style={{ backgroundColor: '#f1ebe1' }}
       >
-        <ChapterCard projectTitles={orderedProjects.map(p => p.title)} />
+        <ChapterCard projectTitles={orderedProjects.map(p => p.title)} slugs={orderedProjects.map(p => p.slug)} />
         {orderedProjects.map((project, index) => (
           <ProjectEntryFrame
             key={project.slug}

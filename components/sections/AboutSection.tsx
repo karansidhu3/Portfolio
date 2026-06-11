@@ -33,11 +33,12 @@ interface Metric {
   padded: boolean;
 }
 
+
 const METRICS: Metric[] = [
-  { value: '03',                       label: 'Projects shipped',           target: 3,    suffix: '',  padded: true },
-  { value: '2+',                       label: 'Years building AI systems',  target: 2,    suffix: '+', padded: false },
-  { value: 'TypeScript · Python · SQL', label: 'Primary stack',             target: null, suffix: '',  padded: false },
-  { value: 'UBC CS · 2026',            label: 'Degree · Year',              target: null, suffix: '',  padded: false },
+  { value: '<200ms',                    label: 'Inference latency, production', target: null, suffix: '', padded: false },
+  { value: '2+',                        label: 'Years building AI systems',     target: null, suffix: '', padded: false },
+  { value: 'TypeScript · Python · SQL', label: 'Primary stack',                target: null, suffix: '', padded: false },
+  { value: 'UBC CS · 2026',            label: 'Degree · Year',                 target: null, suffix: '', padded: false },
 ];
 
 const CELL_CLASSES = [
@@ -179,9 +180,9 @@ export function AboutSection() {
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(1.75rem, 3.2vw, 4.25rem)',
-              fontWeight: 400,
-              lineHeight: 1.3,
-              letterSpacing: '-0.02em',
+              fontWeight: 700,
+              lineHeight: 1.25,
+              letterSpacing: '-0.03em',
             }}
           >
             {HEADING}

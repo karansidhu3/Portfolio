@@ -111,30 +111,6 @@ export function HeroSection() {
         <ScrollIndicator />
       </div>
 
-      {/*
-       * Vertical discipline label — spatial fragment.
-       * Holds the right edge while the statement anchors left.
-       */}
-      <p
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          right: 'clamp(20px, 5.56vw, 80px)',
-          top: '50%',
-          transform: 'translateY(-50%) rotate(90deg)',
-          transformOrigin: 'center center',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'var(--text-xs)',
-          letterSpacing: '0.2em',
-          color: 'var(--color-text-tertiary)',
-          textTransform: 'uppercase',
-          whiteSpace: 'nowrap',
-          opacity: 0.55,
-          zIndex: 'var(--z-content)' as unknown as number,
-        }}
-      >
-        Systems · AI · Full&#8209;Stack
-      </p>
     </section>
   );
 }

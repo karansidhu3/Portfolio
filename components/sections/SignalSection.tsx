@@ -51,7 +51,7 @@ export function SignalSection() {
                 start: 'top 65%',
                 toggleActions: 'play none none none',
               },
-            }).to(borderEl, { scaleY: 1, duration: 1.0, ease: 'power3.out' }, 0);
+            }).to(borderEl, { scaleY: 1, duration: 0.6, ease: 'power4.out' }, 0);
           }
         }, section);
 
@@ -132,8 +132,7 @@ export function SignalSection() {
               letterSpacing: '-0.02em',
             }}
           >
-            The work I&apos;m most interested in lives at the boundary of engineering and intelligence
-            {' '}— systems that don&apos;t just process data, but that get better at processing it.
+            I build systems that improve at their own job.
           </p>
         </div>
 

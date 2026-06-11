@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
@@ -24,19 +24,20 @@ interface ProjectEntryFrameProps {
  * SPREAD 01 — Career OS: title right-anchored, "02" bleeds from top-left.
  * SPREAD 02 — Timekeep: title lower-left, "03" looms center-top.
  *
- * MOTION (revised — Motion A):
- * Content exists from load. No entrance animations.
- * Only watermark parallax remains — drifts -18vh over scroll range.
- * The structural motion (depth) without the content motion (assembly).
+ * INTERACTION:
+ * The entire 90vh frame is the link target. No text affordance needed.
+ * Hover: background tightens ~1%, watermark brightens. Crossing the frame
+ * feels like entering, not clicking.
  *
- * TYPOGRAPHY (revised — Typography A):
- * Title in GeistMono weight 400. The fixed-width character rhythm
- * gives project names an indexing quality — engineered, not styled.
+ * MOTION:
+ * Only watermark parallax — drifts -18vh over scroll range.
+ *
+ * TYPOGRAPHY:
+ * Title in GeistMono weight 400. Fixed-width character rhythm reads as
+ * indexing, not styling. Engineered, not styled.
  */
 
-// Grid margin matching grid-container horizontal padding at each breakpoint
 const GM = 'clamp(20px, 5.56vw, 80px)';
-// Section top inset
 const PT = 'clamp(2rem, 4vw, 5rem)';
 
 interface SpreadLayout {
@@ -49,7 +50,6 @@ interface SpreadLayout {
 
 const SPREADS: SpreadLayout[] = [
   {
-    // 00 — MarketMind: title upper-left, "01" bleeds off top-right
     watermark:   { position: 'absolute', right: '-3%',  top: '-18%' },
     title:       { position: 'absolute', top: '20%',    left: GM,  maxWidth: '58%' },
     descriptor:  { position: 'absolute', bottom: '21%', left: GM },
@@ -57,7 +57,6 @@ const SPREADS: SpreadLayout[] = [
     annotation:  { position: 'absolute', bottom: '12%', right: GM, textAlign: 'right' as const },
   },
   {
-    // 01 — Career OS: title right-anchored, "02" bleeds off top-left
     watermark:   { position: 'absolute', left: '-5%',  top: '-22%' },
     title:       { position: 'absolute', top: '22%',   right: GM, textAlign: 'right' as const, maxWidth: '58%' },
     descriptor:  { position: 'absolute', bottom: '21%',right: GM, textAlign: 'right' as const },
@@ -65,7 +64,6 @@ const SPREADS: SpreadLayout[] = [
     annotation:  { position: 'absolute', bottom: '12%',left: GM },
   },
   {
-    // 02 — Timekeep: title lower-left, "03" looms center-top
     watermark:   { position: 'absolute', left: '50%',  top: '-12%', transform: 'translateX(-50%)' },
     title:       { position: 'absolute', bottom: '30%',left: GM,   maxWidth: '65%' },
     descriptor:  { position: 'absolute', top: '22%',   right: GM,  textAlign: 'right' as const },
@@ -86,11 +84,11 @@ export function ProjectEntryFrame({
   const frameRef = useRef<HTMLDivElement>(null);
   const ctxRef = useRef<{ revert: () => void } | null>(null);
   const reducedMotion = useReducedMotion();
+  const [hovered, setHovered] = useState(false);
 
   const sceneNumber = String(index + 1).padStart(2, '0');
   const spread = SPREADS[index] ?? SPREADS[0];
 
-  // Watermark parallax only — content entrance animations removed (Motion A)
   useEffect(() => {
     const frame = frameRef.current;
     if (!frame || reducedMotion) return;
@@ -125,7 +123,7 @@ export function ProjectEntryFrame({
     };
   }, [reducedMotion]);
 
-  return (
+  const inner = (
     <div
       ref={frameRef}
       style={{
@@ -133,13 +131,11 @@ export function ProjectEntryFrame({
         height: '90vh',
         minHeight: '520px',
         overflow: 'hidden',
+        transition: 'background-color 200ms ease-out',
+        backgroundColor: hovered ? 'rgba(0,0,0,0.012)' : 'transparent',
       }}
     >
-      {/*
-       * Watermark — decorative background number, bleeds off edge.
-       * GeistSans weight 100 at enormous scale: pure environment, not text.
-       * The -18vh parallax creates depth against static foreground elements.
-       */}
+      {/* Watermark — bleeds off edge, parallaxes on scroll */}
       <div
         className="pointer-events-none"
         aria-hidden="true"
@@ -155,7 +151,8 @@ export function ProjectEntryFrame({
             lineHeight: 0.82,
             letterSpacing: '-0.07em',
             color: 'var(--color-text-primary)',
-            opacity: 0.024,
+            opacity: hovered ? 0.042 : 0.024,
+            transition: 'opacity 200ms ease-out',
             userSelect: 'none',
             whiteSpace: 'nowrap',
           }}
@@ -164,7 +161,7 @@ export function ProjectEntryFrame({
         </div>
       </div>
 
-      {/* Scene number — small mono label, corner varies per spread */}
+      {/* Scene number */}
       <span
         aria-hidden="true"
         style={{
@@ -178,10 +175,7 @@ export function ProjectEntryFrame({
         {sceneNumber}
       </span>
 
-      {/*
-       * Title — GeistMono weight 400. Fixed-width character rhythm
-       * reads as indexing, not styling. Explicit spatial position per spread.
-       */}
+      {/* Title */}
       <h2
         id={headingId}
         style={{
@@ -197,7 +191,7 @@ export function ProjectEntryFrame({
         {title}
       </h2>
 
-      {/* Descriptor — project subtitle, position varies per spread */}
+      {/* Descriptor */}
       <p
         style={{
           ...spread.descriptor,
@@ -211,8 +205,8 @@ export function ProjectEntryFrame({
         {descriptor}
       </p>
 
-      {/* Annotation — year + tech + optional case study link */}
-      {(year !== undefined || tech || href) && (
+      {/* Annotation — year + tech only; no text link (frame is the link) */}
+      {(year !== undefined || tech) && (
         <div
           style={{
             ...spread.annotation,
@@ -225,22 +219,22 @@ export function ProjectEntryFrame({
         >
           {year !== undefined && <span style={{ display: 'block' }}>{year}</span>}
           {tech && <span style={{ display: 'block' }}>{tech.slice(0, 3).join(' · ')}</span>}
-          {href && (
-            <a
-              href={href}
-              style={{
-                display: 'block',
-                marginTop: '0.75rem',
-                color: 'var(--color-accent)',
-                pointerEvents: 'auto',
-                letterSpacing: '0.06em',
-              }}
-            >
-              Case study →
-            </a>
-          )}
         </div>
       )}
     </div>
+  );
+
+  if (!href) return inner;
+
+  return (
+    <a
+      href={href}
+      aria-labelledby={headingId}
+      style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {inner}
+    </a>
   );
 }

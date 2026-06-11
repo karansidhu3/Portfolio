@@ -19,28 +19,11 @@ export function ContactSection() {
     <section
       id="contact"
       className="scene-content section-padding"
-      aria-labelledby="contact-heading"
+      aria-label="Contact"
     >
       <div className="grid-container">
 
-        {/* Statement — caption to the address, not the other way around */}
-        <div className="col-span-12 md:col-span-6 mb-10 md:mb-12">
-          <h2
-            id="contact-heading"
-            className="text-text-secondary"
-            style={{
-              fontSize: 'clamp(0.9375rem, 1.1vw, 1.25rem)',
-              fontWeight: 300,
-              lineHeight: 1.55,
-              letterSpacing: '-0.005em',
-            }}
-          >
-            If what you&apos;ve seen here represents the standard you&apos;re
-            working to — reach out.
-          </h2>
-        </div>
-
-        {/* Email — dominant typographic event. The address IS the invitation. */}
+        {/* Email — the address IS the invitation. No caption needed. */}
         <div className="col-span-12 mb-14 md:mb-16">
           <a
             href="mailto:karansidhu5550@gmail.com"

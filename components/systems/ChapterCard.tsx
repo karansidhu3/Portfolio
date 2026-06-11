@@ -5,29 +5,23 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface ChapterCardProps {
   projectTitles: string[];
+  slugs?: string[];
 }
 
 /*
  * ChapterCard — cinematic threshold between declaration and work.
  *
- * PURPOSE:
- * Not a section. Not a heading. A spatial pause — 90vh of authored atmosphere
- * that separates the Signal statement from the project sequence.
+ * A spatial pause — 90vh of authored atmosphere separating Signal from the
+ * project sequence. The word "WORK" at enormous scale serves as environment,
+ * not label. The parallax drift amplifies depth.
  *
- * The word "WORK" at clamp(14rem, 32vw, 48rem) serves as environment, not label.
- * Its opacity (0.032) places it in the same register as the project frame watermarks:
- * present as atmosphere, not readable as text. The parallax drift amplifies depth.
- *
- * Bottom bar: editorial annotation — "work" on the left in tracked uppercase mono,
- * the project index on the right. The contrast of enormous background text against
- * tiny foreground annotation creates scale range that neither alone could achieve.
- *
- * Reduced-motion safe: parallax is scroll-linked, not autonomous — no vestibular risk.
- * aria-hidden: the section communicates nothing to assistive technology that the
- * surrounding sections don't already convey.
+ * Bottom bar: editorial annotation — "work" on the left in tracked uppercase
+ * mono, the project index on the right. If slugs are provided the project
+ * titles link to their respective pages — discerning evaluators don't read
+ * portfolios sequentially.
  */
 
-export function ChapterCard({ projectTitles }: ChapterCardProps) {
+export function ChapterCard({ projectTitles, slugs }: ChapterCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -49,7 +43,6 @@ export function ChapterCard({ projectTitles }: ChapterCardProps) {
         justifyContent: 'flex-end',
       }}
     >
-      {/* Background — architectural environment, not information */}
       <motion.div
         style={{
           y,
@@ -79,7 +72,6 @@ export function ChapterCard({ projectTitles }: ChapterCardProps) {
         </span>
       </motion.div>
 
-      {/* Bottom bar — editorial annotation at the base of the threshold */}
       <div
         style={{
           position: 'relative',
@@ -104,20 +96,46 @@ export function ChapterCard({ projectTitles }: ChapterCardProps) {
             </span>
 
             <div style={{ textAlign: 'right' }}>
-              {projectTitles.map((title, i) => (
-                <p
-                  key={i}
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 'var(--text-xs)',
-                    color: 'var(--color-text-tertiary)',
-                    letterSpacing: '0.04em',
-                    lineHeight: 1.9,
-                  }}
-                >
-                  {String(i + 1).padStart(2, '0')}&nbsp;&nbsp;&nbsp;{title}
-                </p>
-              ))}
+              {projectTitles.map((title, i) => {
+                const slug = slugs?.[i];
+                const content = (
+                  <span>
+                    {String(i + 1).padStart(2, '0')}&nbsp;&nbsp;&nbsp;{title}
+                  </span>
+                );
+                return slug ? (
+                  <a
+                    key={i}
+                    href={`/work/${slug}`}
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 'var(--text-xs)',
+                      color: 'var(--color-text-tertiary)',
+                      letterSpacing: '0.04em',
+                      lineHeight: 1.9,
+                      textDecoration: 'none',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-secondary)')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-tertiary)')}
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <p
+                    key={i}
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 'var(--text-xs)',
+                      color: 'var(--color-text-tertiary)',
+                      letterSpacing: '0.04em',
+                      lineHeight: 1.9,
+                    }}
+                  >
+                    {content}
+                  </p>
+                );
+              })}
             </div>
           </div>
         </div>

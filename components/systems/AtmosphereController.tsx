@@ -57,8 +57,8 @@ const ATMOSPHERE_STATES: AtmosphereState[] = [
     id: 'hero',
     triggerSelector: null, // Initial state — no trigger
     gradient: [
-      'radial-gradient(ellipse 82% 62% at 22% 18%, rgba(210, 185, 145, 0.11) 0%, transparent 68%)',
-      'radial-gradient(ellipse 40% 35% at 76% 76%, rgba(120, 135, 200, 0.04) 0%, transparent 62%)',
+      'radial-gradient(ellipse 82% 62% at 22% 18%, rgba(210, 185, 145, 0.16) 0%, transparent 68%)',
+      'radial-gradient(ellipse 40% 35% at 76% 76%, rgba(120, 135, 200, 0.05) 0%, transparent 62%)',
     ].join(', '),
   },
   {
@@ -84,8 +84,8 @@ const ATMOSPHERE_STATES: AtmosphereState[] = [
     triggerSelector: '#project-career-os',
     // Career OS — subtle green tint. Product thinking, organic, less mechanical.
     gradient: [
-      'radial-gradient(ellipse 70% 50% at 20% 32%, rgba(125, 195, 155, 0.08) 0%, transparent 65%)',
-      'radial-gradient(ellipse 42% 32% at 74% 68%, rgba(120, 135, 200, 0.04) 0%, transparent 55%)',
+      'radial-gradient(ellipse 70% 50% at 20% 32%, rgba(125, 195, 155, 0.12) 0%, transparent 65%)',
+      'radial-gradient(ellipse 42% 32% at 74% 68%, rgba(120, 135, 200, 0.05) 0%, transparent 55%)',
     ].join(', '),
   },
   {
